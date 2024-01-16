@@ -3,55 +3,22 @@
 import { useRef, useState } from "react";
 import pdfData from './data.json';
 import { PdfData } from "./type";
-import { useReactToPrint, } from "react-to-print";
 import { PdfComponent } from "./components";
-import { PdfNavbar } from "./components/Navbar";
+import { Document, PDFDownloadLink, PDFViewer, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
+import { PdfDocument } from "./pdf-components";
 
-const pageStyle = `
-    @page {
-        size: A4;
-        padding-top: 100mm;
-    }
+export default function PdfPage() {
+  const [data, setData] = useState<PdfData>(pdfData);
 
-    header, footer {
-        position: fixed;
-        left: 0;
-        right: 0;
-        background-color: #f0f0f0; /* Set the background color as needed */
-        padding: 10px; /* Adjust the padding value as needed */
+  return <div className="h-[800px]">
+    <PDFViewer className="h-full w-full">
+      <PdfDocument data={data} />
+    </PDFViewer>
+    {/* <PDFDownloadLink document={<PdfDocument />} fileName="somename.pdf">
+      {({ blob, url, loading, error }) =>
+        loading ? 'Loading document...' : 'Download now!'
       }
-      
-      header {
-        top: 0;
-      }
-      
-      footer {
-        bottom: 0;
-      }
-      
-    @media all {
-        .pagebreak {
-          display: none;
-        }
-      }
+    </PDFDownloadLink> */}
+  </div>
 
-      @media print {
-        .pagebreak {
-          page-break-before: always;
-        }
-      }
-  `;
-export default function Page() {
-    const [data, setData] = useState<PdfData>(pdfData);
-    const componentRef = useRef<HTMLDivElement>();
-
-    const handlePrint = useReactToPrint({
-        content: () => componentRef.current!,
-        pageStyle
-    });
-
-    return <div>
-        <PdfComponent data={pdfData} ref={componentRef as React.RefObject<HTMLDivElement>} />
-        <button onClick={handlePrint}>Print this out!</button>
-    </div>
 }
