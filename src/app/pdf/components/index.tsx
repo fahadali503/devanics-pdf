@@ -5,13 +5,13 @@ import { ScopeOfWork } from "./ScopeOfWork"
 import { Approval } from "./approval"
 import { PdfInfo } from "./info"
 import { PdfData } from "../type"
-import { forwardRef } from "react"
+
 
 type Props = {
     data: PdfData;
 }
-export const PdfComponent = forwardRef<HTMLDivElement, Props>(({ data }, ref) => {
-    return (<div ref={ref}>
+export const PdfComponent: React.FC<Props> = ({ data }) => {
+    return (<div>
         <PdfNavbar />
         <div className="container content mx-auto">
             <PdfInfo pdfData={data} />
@@ -22,6 +22,4 @@ export const PdfComponent = forwardRef<HTMLDivElement, Props>(({ data }, ref) =>
 
         <footer className={`h-3 ${PDF_NAVBAR_BG} w-full fixed bottom-0`} />
     </div>)
-})
-PdfComponent.displayName = "PdfComponent"; // Add display name
-
+}
